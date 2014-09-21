@@ -1,4 +1,6 @@
 DEFINITION MODULE Terminal;
+ VAR
+  Done: BOOLEAN;
 
  PROCEDURE Read(VAR ch:CHAR);
   (* Get a single character From the keyboard (stdin). *)

@@ -46,7 +46,7 @@ IMPORT Files;
    IF termIsInput THEN
     Terminal.Read(ch);
     IF ch=lf THEN ch:=EOL; END;
-    Done:=TRUE;
+    Done:=Terminal.Done;
    ELSE
     Files.ReadChar(inf,ch);Done:=NOT Files.IsEof(inf);
     IF ch=lf THEN ch:=EOL; END;

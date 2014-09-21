@@ -34,9 +34,9 @@ static block(){fcntl(0,F_SETFL,attr);}
 
  PROCEDURE Read(VAR ch:CHAR);
   BEGIN
-   IF reread THEN ch:=lastch;
+   IF reread THEN ch:=lastch; Done:=TRUE
    ELSE
-    read(stdin, ADR(ch), 1);
+    Done:=read(stdin, ADR(ch), 1)=1;
    END;
    reread:=FALSE; lastch:=ch;
   END Read;
