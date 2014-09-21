@@ -62,7 +62,6 @@ typedef struct
 } semantic_information;
 
 
-extern int all_flag;
 extern int only_upper_case_flag;
 extern int test_flag;
 extern int pass_of_picking_used_objects_when_all_flag;
