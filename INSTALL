@@ -1,0 +1,120 @@
+Installation in the same directory as one with sources files.
+*************************************************************
+
+
+  1. Run command file `configure' with a single argument which
+     specifies the type of system to build the translator for. This
+     argument looks as follows:
+
+           CPU
+
+
+     For example,
+
+       configure vax
+
+     All The possible values of the parameter are given in file
+     MACHINES.
+
+     `configure' outputs possible names of C compilers which may be
+     used for the Modula-2 translator. After that enter one of the names
+     (for example gcc).
+
+     In the case of successful work `configure' in current directory
+     generates Makefile (from file `Makefile.tmpl'), file `config.h'
+     (from the relative file with suffix `.h' in the subdirectory
+     `config') and possibly creates link `m2l_ascor.c' to assembler
+     functions which implement Modula-2 coroutines. At the end of
+     successful work `configure' write to standard output and file
+     `config.status' configuration options were specified.
+
+  2. Install the Modula-2 translator, run-time support and standard
+     module library by the following command:
+
+          make install
+
+     This command create all object files and copies the translator
+     `m2c' into the directory /usr/local/bin and file `m2c.1' to
+     /usr/local/man/man1.  It also copies file `m2lib.a' (run-time
+     support) , definition, implementation standard modules and its
+     object files into directory /usr/local/lib/m2lib.
+
+     If you wish to copy the files into other directories change
+     values of Makefile variables `bindir', `libdir', `man1dir' and
+     `prefix'. Use only full path name for the directories! For
+     example, if you wish to copy the files into directories
+     `/usr/users/VHDL/mak/bin', `/usr/users/VHDL/mak/lib' and
+     `/usr/users/VHDL/mak/man/man1' specify
+
+           make install prefix=/usr/users/VHDL/mak
+     
+                           or
+
+           make install bindir=/usr/users/VHDL/mak/bin\
+                libdir=/usr/users/VHDL/mak/lib\
+                /usr/users/VHDL/mak/man/man1
+
+
+Makefile contains following useful entries other than install:
+
+  all       -- creation of all object and executable files;
+  
+  dist      -- unconditional creation of compressed distribution tar
+	       file;
+
+  modclean  -- deletion of object files of standard modules;
+
+  clean     -- deletion of object files of the translator and executable
+               file `m2c';
+
+  realclean -- the same as entries `clean', `modclean' and also
+               deletion of object files, library of run-time support
+               and emacs TAGS table;
+               
+  TAGS      -- updating TAGS table for the `m2c' sources and run-time
+               function sources;
+
+  uninstall -- delete the installed files and empty installation
+	       directories.
+
+
+
+Installation in directory other than one with sources files.
+************************************************************
+
+    If you wish to build the object and executable files in a
+subdirectory of the source directory make the same as in previous
+sections. `configure' itself find out the sources.
+
+
+In other case do follows:
+
+  1. Go to that directory before running `configure':
+
+          mkdir m2c-vax; cd m2c-vax
+
+  2. Specify where to find `configure' when you run it:
+
+          ../m2c-0.6/configure ...
+
+  3. Specify where to find the sources, as an argument `+srcdir' to
+     `configure':
+
+          ../m2c-0.6/configure +srcdir=../m2c-0.6 vax
+
+
+Other `configure' options.
+**************************
+
+   `configure' ignores following standard GNU options:
+    
+        `+nfp'     `+gas'     `+x'
+
+   You can use option `+cc' if you wish that configure will not question
+about C compiler name. For example,
+
+      configure +cc=gcc vax
+
+ 
+Vladimir Makarov 	(vmakarov@usa.net) 
+

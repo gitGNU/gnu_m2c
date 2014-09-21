@@ -1,0 +1,23 @@
+   This is Modula-2 translator. The translator is based on language
+report in the 4th edition of Wirth's book Programming in Modula-2.
+The translator also supports of the third edition of Wirth's book.
+High portability of the translator is achieved by intermediate
+translation into C.  The translator is aimed to use on Unixes of
+different flavors.
+
+   The translator is distributed under GNU Public License (see more
+detail in file COPYING).
+
+   Installation of the translator is described in file INSTALL. File
+PROJECTS contains the list of future works on the implementation.  See
+file m2c.1 for details of the translator usage.
+
+   The translator has been tested only on the following platforms:
+       vax under Ultrix
+       i386 under Linux
+       sparc under SunOS 4.1
+       alpha under OSF3.x
+
+Please send bug reports and comments to vmakarov@usa.net
+
+Vladimir Makarov

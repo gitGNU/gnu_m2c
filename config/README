@@ -1,0 +1,22 @@
+  This directory contains configuration files depended from object machine
+and used C compiler.  These files named as CPU-COMPILER.h (e.g. vax-gcc.h,
+vax-pcc.h or m68k-gcc.h).
+
+  The directory also contains assembler files which implements Modula-2
+coroutines.  These files named as CPU-corout.c (e.g. vax-corout.c or
+m88k-corout.c).  If the corresponding file does not exist the Modula-2
+coroutines will not work on given machine.
+
+  Auxiliary files in this directory may be used for creation new configuration
+files.  File common_part.h contains common part of all configuration files for
+tunning Modula-2 translator.  Files named as CPU.h describe common
+information about all C compiler on given machine.  Files named as COMPILER.h
+describe common information about given compiler on all machines.  Besides that
+files IEEE_float.h and GNU_limits.h may be used if ANSI C standard include
+files limits.h and float.h are absent.  File GNU_limits.h describes
+characteristics of integer types which are common for the most of GNU (32-bit)
+machines.  File IEEE_float.h describes needed characteristics of float types
+for machines which support IEEE standard of float numbers.
+
+------------------------------------------------------------------------
+Vladimir Makarov
