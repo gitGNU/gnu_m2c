@@ -69,6 +69,8 @@ array_index_span (index_type_ptr)
 static void
 make_more_precise_size_and_align (type_ptr, size, align)
      register ICN_pointer type_ptr;
+     register Tcard *size;
+     register int *align;
 {
   register enum icode_node_mode mode;
 
