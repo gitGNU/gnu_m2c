@@ -220,18 +220,12 @@ $(bindir)/m2c: m2c
 $(man1dir)/m2c.1:
 	$(INSTALLDATA) $(srcdir)/m2c.1 $(man1dir)/m2c.1
 
-# Deletion of object files of the translator and executable file `m2c'.
-clean:
-	rm -f $(M2F) m2c
+clean: modclean
+	rm -f $(M2F) m2c $(M2LIBPROC) $(m2library)
 
-# The same as entries `clean', `modclean' and also
-# deletion of object files, library of run-time support
-# and emacs TAGS table.
-realclean: clean modclean
-	rm -f TAGS $(M2LIBPROC) $(m2library)
+distclean: clean
 	rm -f config.status m2l_ascor.c m2-config.h Makefile
-
-distclean: realclean  
+	rm -f TAGS
 
 # Updating TAGS table for the `m2c' sources and run-time function sources.
 TAGS: $(M2CSF) $(M2LIBSF)
