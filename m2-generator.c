@@ -791,7 +791,7 @@ static int number_of_return_label_for_current_block;
    for pointer_structure_name_prefix).  The function is used for
    generation of expression of such type.  ICODE_PTR is to be not NULL. */
 
-add_pointer_member_name (icode_ptr)
+void add_pointer_member_name (icode_ptr)
      register ICN_pointer icode_ptr;
 {
   if (MODE (icode_ptr) == ICNM_POINTER_TYPE
