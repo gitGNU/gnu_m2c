@@ -178,7 +178,7 @@ delete_c_output_files ()
        file_name_ptr <= (char **) VLS_END (names_of_c_output_files);
        file_name_ptr++)
     {
-      delete (*file_name_ptr);
+      unlink (*file_name_ptr);
       M2C_FREE (*file_name_ptr);
     }
 }
@@ -1001,7 +1001,7 @@ make_others ()
 	      if (current_modula_output_file_name != NULL)
 		{
 		  if (!okay_after_Modula_to_C || IS_MODULA_OUTPUT_DELETED)
-		    delete (current_modula_output_file_name);
+		    unlink (current_modula_output_file_name);
 		  M2C_FREE (current_modula_output_file_name);
 		  current_modula_output_file_name = NULL;
 		}
@@ -1148,7 +1148,7 @@ m2c_exit (code)
 {
   if (code != 0 && current_modula_output_file_name != NULL)
     {
-      delete (current_modula_output_file_name);
+      unlink (current_modula_output_file_name);
       M2C_FREE (current_modula_output_file_name);
       current_modula_output_file_name = NULL;
     }
@@ -1695,7 +1695,7 @@ C_compilation (after_modula, input_file_name, original_argument_number)
       mv_argument_vector[3] = NULL;
       okay = create_and_wait_for_process (MV, mv_argument_vector);
       if (!okay)
-	delete (mv_argument_vector[1]);
+	unlink (mv_argument_vector[1]);
       M2C_FREE (mv_argument_vector[1]);
     }
   if (C_OUTPUT_EXISTS)

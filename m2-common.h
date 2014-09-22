@@ -29,8 +29,6 @@
 #include <ctype.h>
 #include <unistd.h>
 
-#define delete(v) unlink(v)
-
 
 /* It is necessary when char is not unsigned char. */
 
