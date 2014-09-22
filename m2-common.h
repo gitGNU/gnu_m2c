@@ -23,28 +23,11 @@
 #include "m2-library.h"
 
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-
-
-/* The following for C compilers that have not standard include files. */
-
-#ifdef __STDC__
-extern void exit (int);
-extern void abort (void);
-extern void *malloc ();
-extern void *realloc ();
-extern void free (void *);
-extern char *getenv (const char *);
-#else /* not __STDC__ */
-extern void exit ();
-extern void abort ();
-extern char *malloc ();
-extern char *realloc ();
-extern void free ();
-extern char *getenv ();
-#endif /* not __STDC__ */
+#include <unistd.h>
 
 #define delete(v) unlink(v)
 

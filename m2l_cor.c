@@ -18,6 +18,9 @@
 
 #include <stdio.h>
 
+extern void m2_pasivcor ();
+extern void m2_activcor ();
+
 int *m2_nprcadr;
 unsigned int m2_nprclong;
 int *m2_newcor;
