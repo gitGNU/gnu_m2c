@@ -16,9 +16,10 @@
  * with m2c. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "m2lib.h"
+
 int
-m2_cap (ch)
-     register unsigned int ch;
+m2_cap (unsigned int ch)
 {				/*ASCII*/
   if ('a' <= ch && ch <= 'z')
     return ch + ('A' - 'a');

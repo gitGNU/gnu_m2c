@@ -17,19 +17,12 @@
  */
 
 #include <stdio.h>
-
-#ifdef __STDC__
-extern void *malloc ();
-#else
-extern char *malloc ();
-#endif
+#include "m2lib.h"
 
 void
-m2_arrpar (adr, high, elong)
-     char **adr;
-     unsigned int high, elong;
+m2_arrpar (unsigned char **adr, unsigned int high, unsigned int elong)
 {
-  register char *var, *val;
+  register unsigned char *var, *val;
   register unsigned int valong;
 
   val = (*adr);

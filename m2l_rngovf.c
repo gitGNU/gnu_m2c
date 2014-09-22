@@ -17,9 +17,10 @@
  */
 
 #include <stdio.h>
+#include "m2lib.h"
 
 void
-m2_rngovf ()
+m2_rngovf (void)
 {
   fputs ("\n\rrange overange", stderr);
   m2_halt ();

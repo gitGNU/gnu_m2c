@@ -27,6 +27,9 @@ bindir=$(prefix)/bin
 # definition, implementation standard modules and its object files.
 libdir=$(prefix)/m2lib
 
+# The include file directory, for the m2lib.h header
+includedir=$(prefix)/include
+
 # The directory used by `m2c' for storing temporary files.
 tempdir=/tmp
 
@@ -58,7 +61,7 @@ ETAGS=etags
 # Modula-2 translator and its flags used for creation object files
 # of standard modules.
 M2C=./m2c
-M2CFLAGS= -O -update -c -P$(srcdir)
+M2CFLAGS= -O -update -c -P$(srcdir) -I$(srcdir)
 
 # Standard definition modules.
 DEFF = $(srcdir)/ASCII.def $(srcdir)/Files.def $(srcdir)/InOut.def\
@@ -95,7 +98,7 @@ M2LIBSF= $(srcdir)/m2l_setin.c $(srcdir)/m2l_nites.c\
          $(srcdir)/m2l_eq.c $(srcdir)/m2l_ne.c $(srcdir)/m2l_assarr.c\
          $(srcdir)/m2l_assstr.c $(srcdir)/m2l_cap.c $(srcdir)/m2l_halt.c\
          $(srcdir)/m2l_arrpar.c $(srcdir)/m2l_testptr.c $(srcdir)/m2l_rngovf.c\
-         $(srcdir)/m2l_cor.c
+         $(srcdir)/m2l_cor.c $(srcdir)/m2lib.h
 
 # ALL distribution files in source directory .
 DISTSF = $(M2CDISTSF) $(M2LIBSF) $(DEFF) $(IMPF) $(srcdir)/Makefile.tmpl\
@@ -149,29 +152,29 @@ m2-semantics.o: $(COMMON) $(srcdir)/m2-semantics.h $(srcdir)/m2-semantics.c
 m2-generator.o: $(COMMON) $(srcdir)/m2-generator.h $(srcdir)/m2-generator.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2-generator.c
 
-m2l_eq.o: $(srcdir)/m2l_eq.c
+m2l_eq.o: m2lib.h $(srcdir)/m2l_eq.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_eq.c
-m2l_ne.o: $(srcdir)/m2l_ne.c
+m2l_ne.o: m2lib.h $(srcdir)/m2l_ne.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_ne.c
-m2l_assarr.o: $(srcdir)/m2l_assarr.c
+m2l_assarr.o: m2lib.h $(srcdir)/m2l_assarr.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_assarr.c
-m2l_assstr.o: $(srcdir)/m2l_assstr.c
+m2l_assstr.o: m2lib.h $(srcdir)/m2l_assstr.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_assstr.c
-m2l_cap.o: $(srcdir)/m2l_cap.c
+m2l_cap.o: m2lib.h $(srcdir)/m2l_cap.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_cap.c
-m2l_halt.o: $(srcdir)/m2l_halt.c
+m2l_halt.o: m2lib.h $(srcdir)/m2l_halt.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_halt.c
-m2l_arrpar.o: $(srcdir)/m2l_arrpar.c
+m2l_arrpar.o: m2lib.h $(srcdir)/m2l_arrpar.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_arrpar.c
-m2l_testptr.o: $(srcdir)/m2l_testptr.c
+m2l_testptr.o: m2lib.h $(srcdir)/m2l_testptr.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_testptr.c
-m2l_rngovf.o: $(srcdir)/m2l_rngovf.c
+m2l_rngovf.o: m2lib.h $(srcdir)/m2l_rngovf.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_rngovf.c
-m2l_cor.o: $(srcdir)/m2l_cor.c
+m2l_cor.o: m2lib.h $(srcdir)/m2l_cor.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_cor.c
-m2l_setin.o: m2-config.h $(srcdir)/m2l_setin.c
+m2l_setin.o: m2lib.h $(srcdir)/m2l_setin.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_setin.c
-m2l_nites.o: m2-config.h $(srcdir)/m2l_nites.c
+m2l_nites.o: m2lib.h $(srcdir)/m2l_nites.c
 	$(CC) $(CFLAGS) -c $(srcdir)/m2l_nites.c
 
 $(m2library): $(M2LIBPROC)
@@ -184,6 +187,7 @@ $(m2library): $(M2LIBPROC)
 install: all uninstall $(libdir) $(bindir) $(man1dir)\
          $(libdir)/$(m2library) $(bindir)/m2c $(man1dir)/m2c.1
 	$(INSTALLDATA) $(IMPF) $(DEFF) $(libdir)
+	$(INSTALLDATA) m2lib.h $(includedir)
 	for i in $(IMPF); do\
          $(INSTALLDATA) `basename $$i .mod`.o\
             $(libdir)/$i`basename $$i .mod`.o;\

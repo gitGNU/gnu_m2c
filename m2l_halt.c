@@ -17,9 +17,10 @@
  */
 
 #include <stdio.h>
+#include "m2lib.h"
 
 void
-m2_halt ()
+m2_halt (void)
 {
   fputs ("\n\rhalt\n\r", stderr);
   exit (1);

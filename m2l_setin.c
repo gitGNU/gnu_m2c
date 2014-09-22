@@ -16,11 +16,10 @@
  * with m2c. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "m2-config.h"
+#include "m2lib.h"
 
 int
-m2_setin (s1, s2)
-     Tset s1, s2;
+m2_setin (Tset s1, Tset s2)
 {
   if ((s1 | s2) == s2)
     return TRUE;

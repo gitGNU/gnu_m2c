@@ -16,10 +16,10 @@
  * with m2c. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "m2lib.h"
+
 int
-m2_ne (str1, str2, l)
-     register char *str1, *str2;
-     register unsigned int l;
+m2_ne (char *str1, char *str2, unsigned int l)
 {
   while (l-- != 0)
     if (*str1++ != *str2++)

@@ -16,10 +16,10 @@
  * with m2c. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "m2lib.h"
+
 void
-m2_assarr (var, expr, l)
-     register char *var, *expr;
-     register unsigned int l;
+m2_assarr (char *var, char *expr, unsigned int l)
 {
   while (l-- != 0)
     *var++ = (*expr++);

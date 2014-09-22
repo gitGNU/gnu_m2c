@@ -17,10 +17,10 @@
  */
 
 #include <stdio.h>
+#include "m2lib.h"
 
 char *
-m2_testptr (ptr)
-     char *ptr;
+m2_testptr (char *ptr)
 {
   if (ptr != 0)
     return ptr;

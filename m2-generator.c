@@ -5480,6 +5480,9 @@ generator (output_file_name)
       if (output_file == NULL)
 	error_with_parameter (ERR_object_file_opening,
 			      modula_output_file_name);
+      /* runtime library */
+      if (fprintf (output_file, "#include \"m2lib.h\"\n") < 0)
+	output_file_error();
       /* for gdb, dbx. */
       if (fprintf (output_file, "#line 1 \"%s\"\n#line 1 \"%s\"\n",
 		   input_file_name, modula_output_file_name) < 0)

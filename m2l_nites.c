@@ -16,11 +16,10 @@
  * with m2c. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "m2-config.h"
+#include "m2lib.h"
 
 int
-m2_nites (s1, s2)
-     Tset s1, s2;
+m2_nites (Tset s1, Tset s2)
 {
   if ((s1 | s2) == s1)
     return TRUE;

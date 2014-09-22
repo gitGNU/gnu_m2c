@@ -17,6 +17,7 @@
  */
 
 #include <stdio.h>
+#include "m2lib.h"
 
 extern void m2_pasivcor ();
 extern void m2_activcor ();
@@ -28,11 +29,7 @@ extern int *m2_currcor;
 extern int *m2_maincor;
 
 void
-m2_newprocess (f, adr, clong, cor)
-     int (*f) ();
-     int *adr;
-     unsigned int clong;
-     int **cor;
+m2_newprocess (int (*f) (), int *adr, unsigned int clong, int **cor)
 {
   m2_nprcadr = adr;
   m2_nprclong = clong;
@@ -41,8 +38,7 @@ m2_newprocess (f, adr, clong, cor)
 }
 
 void
-m2_transfer (cor1, cor2)
-     int **cor1, **cor2;
+m2_transfer (int **cor1, int **cor2)
 {
   int *c;
 
