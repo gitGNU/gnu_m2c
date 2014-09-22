@@ -113,7 +113,7 @@
 /* Number of bits in a Modula-2 set.  Modula-2 set is always implemented in C 
    by unsigned int. */
 
-#define BITS_IN_SET (CHAR_BIT*sizeof(unsigned int))		/*unsigned int*/
+#define BITS_IN_SET (int)(CHAR_BIT*sizeof(unsigned int))		/*unsigned int*/
 
 /* Byte is synonym of char. */
 
