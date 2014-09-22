@@ -190,10 +190,8 @@ delete_c_output_files ()
    var = getenv (environment_var);\
    if (var == NULL) var = default_value;}while(FALSE)
 
-void
-main (argc, argv)
-     register int argc;
-     register char *argv[];
+int
+main (int argc, char *argv[])
 {
   register int i, okay;
   int option_has_parameter;
