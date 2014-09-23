@@ -14,5 +14,3 @@
 /* No aim at more alignment. */
 
 #define MAX_ALIGNMENT 8
-
-#define MODULA_ADDRESS_IS_IMPLEMENTED_BY_LONGCARD

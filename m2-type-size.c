@@ -176,58 +176,22 @@ get_record_case_part_size_and_alignment (case_part_ptr, size, align)
 
 static char basic_type_size_table[] =
 {				/*BTM_SHORT_CARDINAL - BTM_LONG_CARDINAL_OR_INTEGER*/
-#ifdef MODULA_SHORT_IS_IMPLEMENTED_BY_C_CHAR
-  sizeof (unsigned char),
-#else
-  sizeof (unsigned short),
-#endif
-
-  sizeof (unsigned int),
-
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-  sizeof (unsigned long),
-#else
-  sizeof (unsigned int),
-#endif
-
-#ifdef MODULA_SHORT_IS_IMPLEMENTED_BY_C_CHAR
-  sizeof (char),
-#else
-  sizeof (short),
-#endif
-
-  sizeof (int),
-
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-  sizeof (long),
-#else
-  sizeof (int),
-#endif
-
-  sizeof (float), sizeof (float), sizeof (double),
-
-#ifdef MODULA_CHAR_IS_IMPLEMENTED_BY_C_UNSIGNED_CHAR
-  sizeof (unsigned char),
-#else
-  sizeof (char),
-#endif
-
-  BYTE_SIZE, sizeof (int), sizeof (int),
-
-#ifdef MODULA_SHORT_IS_IMPLEMENTED_BY_C_CHAR
-  sizeof (char),
-#else
-  sizeof (short),
-#endif
-
-  sizeof (int),
-
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-  sizeof (long),
-#else
-  sizeof (int)
-#endif
-
+  [BTM_SHORT_CARDINAL] = sizeof (unsigned short),
+  [BTM_CARDINAL]       = sizeof (unsigned),
+  [BTM_LONG_CARDINAL]  = sizeof (unsigned long long),
+  [BTM_SHORT_INTEGER]  = sizeof (short),
+  [BTM_INTEGER]        = sizeof (int),
+  [BTM_LONG_INTEGER]   = sizeof (unsigned long),
+  [BTM_SHORT_REAL]     = sizeof (float),
+  [BTM_REAL]           = sizeof (float),
+  [BTM_LONG_REAL]      = sizeof (double),
+  [BTM_CHAR]           = sizeof (unsigned char),
+  [BTM_BYTE]           = BYTE_SIZE,
+  [BTM_WORD]           = sizeof (int),
+  [BTM_NIL]            = sizeof (intptr_t),
+  [BTM_SHORT_CARDINAL_OR_INTEGER] = sizeof (short),
+  [BTM_CARDINAL_OR_INTEGER]       = sizeof (int),
+  [BTM_LONG_CARDINAL_OR_INTEGER]  = sizeof (long long),
 };
 
 

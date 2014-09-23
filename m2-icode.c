@@ -2930,20 +2930,11 @@ print_node (ref)
   switch (node_mode)
     {
     case ICNM_INTEGER:
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-      fprintf (stderr, "integer_value=%ld", INTEGER_NODE (ref)->integer_value);
-#else
-      fprintf (stderr, "integer_value=%d", INTEGER_NODE (ref)->integer_value);
-#endif
+      fprintf (stderr, "integer_value=%lld", INTEGER_NODE (ref)->integer_value);
       break;
     case ICNM_CARDINAL:
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-      fprintf (stderr, "cardinal_value=%lu",
+      fprintf (stderr, "cardinal_value=%llu",
 	       CARDINAL_NODE (ref)->cardinal_value);
-#else
-      fprintf (stderr, "cardinal_value=%u",
-	       CARDINAL_NODE (ref)->cardinal_value);
-#endif
       break;
     case ICNM_REAL:
       real_value = REAL_NODE (ref)->real_value;

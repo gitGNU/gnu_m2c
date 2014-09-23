@@ -177,31 +177,6 @@
 
 #define IS_ORDER_IMPORTANT(opt) (!strcmp(opt,"-l"))
 
-/* If the following macros is defined than Modula-2 CHAR is represented
-   as `unsigned char'.  To make qualitative code this macros should be defined
-   if C compiler implements `unsigned char'. */
-
-#define MODULA_CHAR_IS_IMPLEMENTED_BY_C_UNSIGNED_CHAR
-
-/* If the following macros is not defined than Modula-2 SHORTCARD and SHORTINT
-   are represented as `unsigned short' and `short int'.  Otherwise these
-   Modula-2 basic types are implemented by `unsigned char' and `char'.  This
-   macros may be defined only when the used C compiler implements
-   `unsigned char' and `char' as `signed char'. */
-
-/*#define MODULA_SHORT_IS_IMPLEMENTED_BY_C_CHAR*/
-
-/* If the following macros is defined than Modula-2 LONGCARD and LONGINT
-   are represented as `unsigned long' and `long int'.  Otherwise these Modula-2
-   basic types are implemented analogously to INTEGER and CARDINAL. */
-
-#define MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-
-/* If the following macros is defined than C keyword `void' may be used in
-   generated code. */
-
-#define C_VOID_IS_IMPLEMENTED
-
 /* The following file is to be included here! */
 
 #include "common_part.h"

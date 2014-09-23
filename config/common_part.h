@@ -4,8 +4,6 @@
    This file is part of Modula-2 translator.  */
 
 
-#define Csuflong 4
-
 /* Suffixes of implementation (main) module file and definition module file
    must be different.  Suffixes of implementation module and main module files
    can be the same. */
@@ -54,48 +52,17 @@
 
 /* Maximum and minimum values of Modula-2 basic types. */
 
-#ifdef MODULA_SHORT_IS_IMPLEMENTED_BY_C_CHAR
-#define SHORTCARD_MAX UCHAR_MAX	/* unsigned char */
-#else
-#define SHORTCARD_MAX USHRT_MAX	/* unsigned short */
-#endif
+#define SHORTCARD_MAX USHRT_MAX
+#define CARDINAL_MAX UINT_MAX
+#define LONGCARD_MAX ULLONG_MAX
 
-#define CARDINAL_MAX UINT_MAX	/* unsigned int */
+#define SHORTINT_MIN SHRT_MIN
+#define INTEGER_MIN  INT_MIN
+#define LONGINT_MIN LLONG_MIN
 
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-#define LONGCARD_MAX ULONG_MAX	/* unsigned long */
-#else
-#define LONGCARD_MAX UINT_MAX	/* unsigned int */
-#endif
-
-#ifdef MODULA_SHORT_IS_IMPLEMENTED_BY_C_CHAR
-#define SHORTINT_MIN SCHAR_MIN	/* char */
-#else
-#define SHORTINT_MIN SHRT_MIN	/* short */
-#endif
-
-#define INTEGER_MIN  INT_MIN	/* int */
-
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-#define LONGINT_MIN LONG_MIN	/* long */
-#else
-#define LONGINT_MIN INT_MIN	/* int */
-#endif
-
-#ifdef MODULA_SHORT_IS_IMPLEMENTED_BY_C_CHAR
-#define SHORTINT_MAX SCHAR_MAX	/* char */
-#else
-#define SHORTINT_MAX SHRT_MAX	/* short */
-#endif
-
-
-#define INTEGER_MAX INT_MAX		/* int */
-
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-#define LONGINT_MAX LONG_MAX	/* long */
-#else
-#define LONGINT_MAX INT_MAX	/* int */
-#endif
+#define SHORTINT_MAX SHRT_MAX
+#define INTEGER_MAX INT_MAX
+#define LONGINT_MAX LLONG_MAX
 
 #define SHORTREAL_MAX FLT_MAX	/* float */
 #define REAL_MAX FLT_MAX	/* float */
@@ -123,13 +90,7 @@
 
 /* Internal translator representation of Modula-2 constant value. */
 
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-typedef unsigned long Tcard;
-typedef long Tint;
-#else
-typedef unsigned int Tcard;
-typedef int Tint;
-#endif
-
+typedef unsigned long long Tcard;
+typedef long long Tint;
 typedef double Treal;
 typedef unsigned int Tset;

@@ -33,70 +33,21 @@ static int block_code_may_be_used ();
 /* This page contains C representations of primitive modula-2 types. */
 
 
-#ifdef MODULA_CHAR_IS_IMPLEMENTED_BY_C_UNSIGNED_CHAR
-char char_type_representation[] = "unsigned char";
-#else
-char char_type_representation[] = "char";
-#endif
-
-char cardinal_type_representation[] = "unsigned int";
-
-char real_type_representation[] = "float";
-
-char integer_type_representation[] = "int";
-
-#ifdef MODULA_SHORT_IS_IMPLEMENTED_BY_C_CHAR
-char shortcard_type_representation[] = "unsigned char";
-#else
-char shortcard_type_representation[] = "unsigned short";
-#endif
-
-char shortreal_type_representation[] = "float";
-
-#ifdef MODULA_SHORT_IS_IMPLEMENTED_BY_C_CHAR
-char shortint_type_representation[] = "char";
-#else
-char shortint_type_representation[] = "short";
-#endif
-
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-char longcard_type_representation[] = "unsigned long";
-#else
-char longcard_type_representation[] = "unsigned int";
-#endif
-
-char longreal_type_representation[] = "double";
-
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-char longint_type_representation[] = "long";
-#else
-char longint_type_representation[] = "int";
-#endif
-
-char byte_type_representation[] = "char";
-
-char word_type_representation[] = "int";
-
-char set_type_representation[] = "unsigned int";
-
-#ifdef C_VOID_IS_IMPLEMENTED
-char void_type_representation[] = "void";
-#else
-char void_type_representation[] = "int";
-#endif
-
-/* The same implementation as cardinal_type_representation or
-   longcard_type_representation. */
-
-#ifdef MODULA_ADDRESS_IS_IMPLEMENTED_BY_LONGCARD
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-static char address_type_representation[] = "unsigned long";
-#else
-static char address_type_representation[] = "unsigned int";
-#endif
-#else
-static char address_type_representation[] = "unsigned int";
-#endif
+static char char_type_representation[] = "unsigned char";
+static char cardinal_type_representation[] = "unsigned";
+static char real_type_representation[] = "float";
+static char integer_type_representation[] = "int";
+static char shortcard_type_representation[] = "unsigned short";
+static char shortreal_type_representation[] = "float";
+static char shortint_type_representation[] = "short";
+static char longcard_type_representation[] = "unsigned long long";
+static char longreal_type_representation[] = "double";
+static char longint_type_representation[] = "long long";
+static char byte_type_representation[] = "char";  // TODO: signed or unsigned?
+static char word_type_representation[] = "int";
+static char set_type_representation[] = "unsigned int";
+static char void_type_representation[] = "void";
+static char address_type_representation[] = "uintptr_t";
 
 
 
@@ -845,13 +796,6 @@ generate_expression_according_to_flags (expr, flags)
 	  if (fputs ("(*", output_file) == EOF)
 	    output_file_error ();
 	}
-#ifndef MODULA_CHAR_IS_IMPLEMENTED_BY_C_UNSIGNED_CHAR
-      else if (character_flag && sinf.type == ICN_POINTER (&ICN_TD_char))
-	{
-	  if (fputc ('(', output_file) == EOF)
-	    output_file_error ();
-	}
-#endif
       else
 	right_bracket_is_needed = FALSE;
     }
@@ -860,14 +804,6 @@ generate_expression_according_to_flags (expr, flags)
     {
       if (sinf.it_is_designator && through_struct_pointer_flag)
 	add_pointer_member_name (sinf.type);
-#ifndef MODULA_CHAR_IS_IMPLEMENTED_BY_C_UNSIGNED_CHAR
-      else if (character_flag && (it_is_string_type (sinf.type)
-				  || sinf.type == ICN_POINTER (&ICN_TD_char)))
-	{
-	  if (fprintf (output_file, "&0%o", CHARACTER_MAX) < 0)
-	    output_file_error ();
-	}
-#endif
       if (right_bracket_is_needed)
 	{
 	  if (fputc (')', output_file) == EOF)
@@ -1319,17 +1255,10 @@ output_type_definition_part (type, type_indirection, it_is_left_part)
 		  if (fputc (')', output_file) == EOF)
 		    output_file_error ();
 		}
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-	      if (fprintf (output_file, "[0%lo]",
+	      if (fprintf (output_file, "[0%llo]",
 			   array_index_span (ARRAY_TYPE_NODE (type)
 					     ->array_index_type) + 1) < 0)
 		output_file_error ();
-#else
-	      if (fprintf (output_file, "[0%o]",
-			   array_index_span (ARRAY_TYPE_NODE (type)
-					     ->array_index_type) + 1) < 0)
-		output_file_error ();
-#endif
 	      output_type_definition_part (ARRAY_TYPE_NODE (type)->base_type,
 					   0, it_is_left_part);
 	    }
@@ -2360,66 +2289,36 @@ output_constant_value (constant)
   constant_mode = MODE (constant);
   if (constant_mode == ICNM_INTEGER)
     {
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
       if (fprintf (output_file, (INTEGER_NODE (constant)->value_type
 				 == ICN_POINTER (&ICN_TD_long_integer)
-				 ? "%ldl" : "%ld"),
+				 ? "%lldll" : "%lld"),
 		   INTEGER_NODE (constant)->integer_value) < 0)
 	output_file_error ();
-#else
-      if (fprintf (output_file, "%d", INTEGER_NODE (constant)->integer_value)
-	  < 0)
-	output_file_error ();
-#endif
     }
   else if (constant_mode == ICNM_CARDINAL)
     {
       if (it_is_integer_cardinal_type (CARDINAL_NODE (constant)->value_type))
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
 	{
-	  if (fprintf (output_file, "%ld",
+	  if (fprintf (output_file, "%lld",
 		       CARDINAL_NODE (constant)->cardinal_value) < 0)
 	    output_file_error ();
 	}
-#else
-	{
-	  if (fprintf (output_file, "%d",
-		       CARDINAL_NODE (constant)->cardinal_value) < 0)
-	    output_file_error ();
-	}
-#endif
       else if (CARDINAL_NODE (constant)->value_type
 	       == ICN_POINTER (&ICN_TD_char))
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
 	{
-	  if (fprintf (output_file, "\'\\%lo\'",
+	  if (fprintf (output_file, "\'\\%llo\'",
 		       CARDINAL_NODE (constant)->cardinal_value) < 0)
 	    output_file_error ();
 	}
-#else
-	{
-	  if (fprintf (output_file, "\'\\%o\'",
-		       CARDINAL_NODE (constant)->cardinal_value) < 0)
-	    output_file_error ();
-	}
-#endif
       else
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
 	{
 	  if (fprintf (output_file, (CARDINAL_NODE (constant)->value_type
 				     == ICN_POINTER (&ICN_TD_long_cardinal)
-				     ? "(unsigned long)0%lol"
-				     : "(unsigned)0%lo"),
+				     ? "(unsigned long long)0%lloll"
+				     : "(unsigned)0%llo"),
 		       CARDINAL_NODE (constant)->cardinal_value) < 0)
 	    output_file_error ();
 	}
-#else
-	{
-	  if (fprintf (output_file, "(unsigned)0%o",
-		       CARDINAL_NODE (constant)->cardinal_value) < 0)
-	    output_file_error ();
-	}
-#endif
     }
   else if (constant_mode == ICNM_REAL)
     {
@@ -2477,15 +2376,6 @@ generate_test_function (type)
       output_constant_value (min_or_max (type, TRUE));
       if (fputs ("<=", output_file) == EOF)
 	output_file_error ();
-#ifndef MODULA_CHAR_IS_IMPLEMENTED_BY_C_UNSIGNED_CHAR
-      if (through_range_type (type) == ICN_POINTER (&ICN_TD_char))
-	{
-	  if (fprintf (output_file, "e&0%o && e&0%o", CHARACTER_MAX,
-		       CHARACTER_MAX) < 0)
-	    output_file_error ();
-	}
-      else
-#endif
 	{
 	  if (fputs ("e && e", output_file) == EOF)
 	    output_file_error ();
@@ -2740,13 +2630,8 @@ generate_expression (expression)
 	  if (it_is_statements_generation_pass)
 	    {
 	      get_type_size_and_alignment (sinf.type, &size, &align);
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-	      if (fprintf (output_file, ",0%lo)", size / BYTE_SIZE) < 0)
+	      if (fprintf (output_file, ",0%llo)", size / BYTE_SIZE) < 0)
 		output_file_error ();
-#else
-	      if (fprintf (output_file, ",0%o)", size / BYTE_SIZE) < 0)
-		output_file_error ();
-#endif
 	    }
 	}
       else
@@ -2859,19 +2744,11 @@ generate_expression (expression)
 		output_file_error ();
 	    }
 	  else
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
 	    {
-	      if (fprintf (output_file, "%s0%lo]", operation_representation,
+	      if (fprintf (output_file, "%s0%llo]", operation_representation,
 			   min_index) < 0)
 		output_file_error ();
 	    }
-#else
-	    {
-	      if (fprintf (output_file, "%s0%o]", operation_representation,
-			   min_index) < 0)
-		output_file_error ();
-	    }
-#endif
 	}
       break;
     case ICNM_ELEMENT_IN_SET_VALUE:
@@ -3652,13 +3529,8 @@ generate_call (call)
 			  get_type_size_and_alignment
 			    (FORMAL_PARAMETER_TYPE (formal), &formal_size,
 			     &align);
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-			  if (fprintf (output_file, ",0%lo)", formal_size) < 0)
+			  if (fprintf (output_file, ",0%llo)", formal_size) < 0)
 			    output_file_error ();
-#else
-			  if (fprintf (output_file, ",0%o)", formal_size) < 0)
-			    output_file_error ();
-#endif
 			}
 		    }
 		  else if (sinf.it_is_array_parameter)
@@ -3793,15 +3665,9 @@ generate_call (call)
 		      if (fprintf (output_file, ".%s",
 				   open_array_high_value_name) < 0)
 			output_file_error ();
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-		      if (fprintf (output_file, "=0%lo",
+		      if (fprintf (output_file, "=0%llo",
 				   actual_size / formal_size - 1) < 0)
 			output_file_error ();
-#else
-		      if (fprintf (output_file, "=0%o",
-				   actual_size / formal_size - 1) < 0)
-			output_file_error ();
-#endif
 		    }
 		}
 	      output_string_when_statements_generation (",");
@@ -3954,15 +3820,9 @@ generate_statement (statement)
 		{
 		  get_type_size_and_alignment
 		    (sinf1.type, &return_expression_type_size, &align);
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-		  if (fprintf (output_file, ",0%lo)",
+		  if (fprintf (output_file, ",0%llo)",
 			       return_expression_type_size / BYTE_SIZE) < 0)
 		    output_file_error ();
-#else
-		  if (fprintf (output_file, ",0%o)",
-			       return_expression_type_size / BYTE_SIZE) < 0)
-		    output_file_error ();
-#endif
 		}
 	    }
 	  else
@@ -4185,13 +4045,8 @@ generate_statement (statement)
 		  if (fputc ((increment_is_negative ? '-' : '+'), output_file)
 		      == EOF)
 		    output_file_error ();
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-		  if (fprintf (output_file, "%lu))){", increment) < 0)
+		  if (fprintf (output_file, "%llu))){", increment) < 0)
 		    output_file_error ();
-#else
-		  if (fprintf (output_file, "%u))){", increment) < 0)
-		    output_file_error ();
-#endif
 		}
 	      else if (control_variable_type == ICN_POINTER (&ICN_TD_address))
 		{
@@ -4200,17 +4055,10 @@ generate_statement (statement)
 		    output_file_error ();
 		  GEN_ADDRESS_AS_CARDINAL_OR_CHARACTER
 		    (FOR_STATEMENT_NODE (statement)->for_control_variable);
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
 		  if (fprintf (output_file,
 			       (increment_is_negative
-				? "-%lu)){" : "+%lu)){\n"), increment) < 0)
+				? "-%llu)){" : "+%llu)){\n"), increment) < 0)
 		    output_file_error ();
-#else
-		  if (fprintf (output_file,
-			       (increment_is_negative
-				? "-%u)){" : "+%u)){"), increment) < 0)
-		    output_file_error ();
-#endif
 		}
 	      else if (increment == 1)
 		{
@@ -4219,21 +4067,12 @@ generate_statement (statement)
 		    output_file_error ();
 		}
 	      else
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
 		{
 		  if (fprintf (output_file,
 			       (increment_is_negative
-				? "-=%lu){" : "+=%lu){"), increment) < 0)
+				? "-=%llu){" : "+=%llu){"), increment) < 0)
 		    output_file_error ();
 		}
-#else
-		{
-		  if (fprintf (output_file,
-			       (increment_is_negative
-				? "-=%u){" : "+=%u){"), increment) < 0)
-		    output_file_error ();
-		}
-#endif
 	    }
 	  finish_expression ();
 	  generate_statement (FOR_STATEMENT_NODE (statement)->for_statements);
@@ -4341,15 +4180,9 @@ generate_statement (statement)
 			     <= (INTEGER_NODE (right_case_range_bound)
 				 ->integer_value);
 			     integer_case_value++)
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-			  if (fprintf (output_file, "case %ld:",
+			  if (fprintf (output_file, "case %lld:",
 				       integer_case_value) < 0)
 			    output_file_error ();
-#else
-         		  if (fprintf (output_file, "case %d:",
-				       integer_case_value) < 0)
-			    output_file_error ();
-#endif
 		      }
 		    else
 		      {
@@ -4358,15 +4191,9 @@ generate_statement (statement)
 			     cardinal_case_value
 			     <= cardinal_value (right_case_range_bound);
 			     cardinal_case_value++)
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-			  if (fprintf (output_file, "case 0%lo:",
+			  if (fprintf (output_file, "case 0%llo:",
 				       cardinal_case_value) < 0)
 			    output_file_error ();
-#else
-		          if (fprintf (output_file, "case 0%o:",
-				       cardinal_case_value) < 0)
-			    output_file_error ();
-#endif
 		      }
 		  }
 	      if (CASE_STATEMENT_VARIANT_NODE (case_variant)->case_label_list
@@ -4409,30 +4236,16 @@ generate_statement (statement)
 		(ASSIGNMENT_NODE (statement)->assignment_expression);
 	      if (it_is_statements_generation_pass)
 		{
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-		  if (fprintf (output_file, ",0%lo",
+		  if (fprintf (output_file, ",0%llo",
 			       assignment_variable_size / BYTE_SIZE) < 0)
 		    output_file_error ();
-#else
-		  if (fprintf (output_file, ",0%o",
-			       assignment_variable_size / BYTE_SIZE) < 0)
-		    output_file_error ();
-#endif
 		  if (assignment_variable_size > assignment_expression_size
 		      && third_edition_flag)
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
 		    {
-		      if (fprintf (output_file, ",0%lo",
+		      if (fprintf (output_file, ",0%llo",
 				   assignment_expression_size / BYTE_SIZE) < 0)
 			output_file_error ();
 		    }
-#else
-		    {
-		      if (fprintf (output_file, ",0%o",
-				   assignment_expression_size / BYTE_SIZE) < 0)
-			output_file_error ();
-		    }
-#endif
 		  if (fputs (");", output_file) == EOF)
 		    output_file_error ();
 		}
@@ -4823,15 +4636,9 @@ generate_block (module_or_procedure)
 	    output_formal_parameter_type_name (formal_parameter);
 	    if (fprintf (output_file, ".%s", open_array_high_value_name) < 0)
 	      output_file_error ();
-#ifdef MODULA_LONG_IS_IMPLEMENTED_BY_C_LONG
-	    if (fprintf (output_file, ",0%lo);", parameter_size / BYTE_SIZE)
+	    if (fprintf (output_file, ",0%llo);", parameter_size / BYTE_SIZE)
 		< 0)
 	      output_file_error ();
-#else
-	    if (fprintf (output_file, ",0%o);", parameter_size / BYTE_SIZE)
-		< 0)
-	      output_file_error ();
-#endif
 	  }
       generate_local_module_blocks (module_or_procedure);
       execute_pass (module_or_procedure, STATEMENTS_GENERATION_PASS);
