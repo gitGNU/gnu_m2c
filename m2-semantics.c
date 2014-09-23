@@ -3307,8 +3307,8 @@ process_declarations (start)
 		   && QUALIFIED_EXPORT_NODE (declaration_element)->opaque_type)
 	    {
 	      int error_is_fixed = FALSE;
-	      int word_align, type_align;
-	      Tcard word_size, type_size;
+	      int address_align, type_align;
+	      Tcard address_size, type_size;
 
 	      if (MODE (exported_object) != ICNM_TYPE_DECLARATION)
 		error_is_fixed = TRUE;
@@ -3316,12 +3316,12 @@ process_declarations (start)
 		       != NULL)
 		{
 		  get_type_size_and_alignment
-		    (ICN_POINTER (&ICN_TD_word), &word_size, &word_align);
+		    (ICN_POINTER (&ICN_TD_address), &address_size, &address_align);
 		  get_type_size_and_alignment
 		    (TYPE_DECLARATION_NODE (exported_object)->type_definition,
 		     &type_size, &type_align);
-		  if (type_align != word_align
-		      || (!strict_flag && type_size != word_size)
+		  if (type_align != address_align
+		      || (!strict_flag && type_size != address_size)
 		      ||
 		      (strict_flag
 		       &&
