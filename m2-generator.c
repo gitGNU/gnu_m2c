@@ -355,11 +355,7 @@ static char record_case_variant_name_prefix[] = "variant";
 
 static char range_test_function_name_prefix[] = "test";
 
-/* Modula-2 actual parameters are passed as single structure.  All such
-   structures (having the same name as name structure representing the
-   corresponding procedure formal parameters  -- see commentaries for
-   par_prefix) for called procedures are in local C union.  The following
-   string all_actuals_name is name of the C union.
+/* Modula-2 actual parameters are passed as single structure.
 
    For example,
      module m;
@@ -379,29 +375,23 @@ static char range_test_function_name_prefix[] = "test";
      ...
      main (...)
      {
-       union
-       {
-         struct par_p_m par_p_m;
-         struct par_p1_m par_p1_m;
-       } actuals;
-       (actuals.par_p_m._c = (10), actuals.par_p_m._i = (&(var_m._k)),
-        _p_m (&actuals.par_p_m));
+       struct par_p_m par_p_m;
+       struct par_p1_m par_p1_m;
+       (par_p_m._c = (10), par_p_m._i = (&(var_m._k)),
+        _p_m (&par_p_m));
        (var_m._k)
-         = ((actuals.par_p1_m._ch = ('\10'), _p1_m (&actuals.par_p1_m)));
+         = ((par_p1_m._ch = ('\10'), _p1_m (&par_p1_m)));
      }
 */
 
-static char all_actuals_name[] = "actuals";
-
-/* The value open array parameter is passed by its address (see commentaries
-   for open_array_address_name).  If address of actual parameter can not be in
-   C then the local C union temp_actuals_name is generated.  The union
-   contains C structures for each such call.  The C structure contains
-   members for each such parameter.  The following strings are used as name
-   of the C union, as prefix of name of the C structure and as prefix of
-   name of the C member.  Prefix of name of the C structure and as prefix of
-   name of the C member are followed by order number of corresponding call and
-   order number of such parameter in the call.
+/* The value open array parameter is passed by its address (see commentaries for
+   open_array_address_name).  If address of actual parameter can not be in C
+   then a C structure is generated for each such call.  The C structure contains
+   members for each such parameter.  The following strings are used as as prefix
+   of name of the C structure and as prefix of name of the C member.  Prefix of
+   name of the C structure and as prefix of name of the C member are followed by
+   order number of corresponding call and order number of such parameter in the
+   call.
 
    For example,
      module m;
@@ -416,39 +406,34 @@ static char all_actuals_name[] = "actuals";
      ...
      main ()
      {
-       union {struct par_p_m par_p_m;} actuals;
-       union {
-         struct {char temp_actual1;} temp_call_actuals1;
-       } temp_actuals;
-       (temp_actuals.temp_call_actuals1.temp_actual1 = ('\10'),
-        actuals.par_p_m._a.adr
-        = (char *) (&temp_actuals.temp_call_actuals1.temp_actual1),
-        actuals.par_p_m._a.high = 00,
-        _p_m (&actuals.par_p_m));
+       struct par_p_m par_p_m;
+       struct {char temp_actual1;} temp_call_actuals1;
+       (temp_call_actuals1.temp_actual1 = ('\10'),
+        par_p_m._a.adr
+        = (char *) (&temp_call_actuals1.temp_actual1),
+        par_p_m._a.high = 00,
+        _p_m (&par_p_m));
        ...
      }
 */
-
-static char temp_actuals_name[] = "temp_actuals";
 
 static char temp_call_actuals_name_prefix[] = "temp_call_actuals";
 
 static char actual_name_prefix[] = "temp_actual";
 
-/* The three following strings temp_variables_name,
-   temp_expression_variables_names_prefix and temp_variable_name_prefix
-   are used as C union name, as prefix of C structure name and as prefix
-   of name of C member in the C structure.  These data are used as temporary
-   variables.  The C structure corresponds to Modula-2 expression in which
-   temporary variables are needed.  The C member corresponds to a temporary
-   variable in the expression.  The prefixes are followed by number of
+/* The following strings temp_expression_variables_names_prefix and
+   temp_variable_name_prefix are used as prefix of C structure name and as
+   prefix of name of C member in the C structure.  These data are used as
+   temporary variables.  The C structure corresponds to Modula-2 expression in
+   which temporary variables are needed.  The C member corresponds to a
+   temporary variable in the expression.  The prefixes are followed by number of
    corresponding Modula-2 expression in current block and number of temporary
    variable in the expression.
 
    Temporary variables are needed in following cases:
      1) call of type transfer function with constant (e.g. integer (10.0)
-        generates (temp_vars.temp_expr_vars0.temp_var1=(1.0e+01),
-	           *(int*)&temp_vars.temp_expr_vars0.temp_var1));
+        generates (temp_expr_vars0.temp_var1=(1.0e+01),
+	           *(int*)&temp_expr_vars0.temp_var1));
      2) pass of real constant as parameter of type WORD;
      3) implementation of functions with structured results (this Modula-2
         implementation permits structured results of function).
@@ -469,26 +454,22 @@ static char actual_name_prefix[] = "temp_actual";
      main ()
      {
        ...
-       union {
-         struct {
-           char temp_var1[013];
-           char temp_var2[013];
-         } temp_expr_vars0;
-       } temp_vars;
+       struct {
+         char temp_var1[013];
+         char temp_var2[013];
+       } temp_expr_vars0;
        (var_m._b)
          = (m2_eq
-	    (((actuals.par_f_m._i = (0),
-	       _f_m (&actuals.par_f_m,
-	             temp_vars.temp_expr_vars0.temp_var1),
-	    temp_vars.temp_expr_vars0.temp_var1)),
-	    ((actuals.par_f_m._i = (1),
-	      _f_m (&actuals.par_f_m,
-	            temp_vars.temp_expr_vars0.temp_var2),
-	      temp_vars.temp_expr_vars0.temp_var2)), 013));
+	    (((par_f_m._i = (0),
+	       _f_m (&par_f_m,
+	             temp_expr_vars0.temp_var1),
+	    temp_expr_vars0.temp_var1)),
+	    ((par_f_m._i = (1),
+	      _f_m (&par_f_m,
+	            temp_expr_vars0.temp_var2),
+	      temp_expr_vars0.temp_var2)), 013));
      }
 */
-
-static char temp_variables_name[] = "temp_vars";
 
 static char temp_expression_variables_names_prefix[] = "temp_expr_vars";
 
@@ -2939,7 +2920,7 @@ generate_call (call)
 	  if (it_is_statements_generation_pass)
 	    {
 	      if (fprintf
-		  (output_file, "%s.%s%x.%s%x", temp_variables_name,
+		  (output_file, "%s%x.%s%x",
 		   temp_expression_variables_names_prefix,
 		   (unsigned) number_of_expression_with_temp_variables,
 		   temp_variable_name_prefix,
@@ -2973,8 +2954,8 @@ generate_call (call)
 	  if (temporary_variable_is_needed)
 	    {
 	      if (fprintf
-		  (output_file, "%s.%s%x.%s%x",
-		   temp_variables_name, temp_expression_variables_names_prefix,
+		  (output_file, "%s%x.%s%x",
+		   temp_expression_variables_names_prefix,
 		   (unsigned) number_of_expression_with_temp_variables,
 		   temp_variable_name_prefix,
 		   (unsigned) number_of_current_temporary_variable) < 0)
@@ -3360,8 +3341,7 @@ generate_call (call)
 		      if (it_is_statements_generation_pass)
 			{
 			  if (fprintf
-			      (output_file, "%s.%s%x.%s%x=",
-			       temp_variables_name,
+			      (output_file, "%s%x.%s%x=",
 			       temp_expression_variables_names_prefix,
 			       (unsigned) number_of_expression_with_temp_variables,
 			       temp_variable_name_prefix,
@@ -3375,8 +3355,6 @@ generate_call (call)
 		    }
 		  if (it_is_statements_generation_pass)
 		    {
-		      if (fprintf (output_file, "%s.", all_actuals_name) < 0)
-			output_file_error ();
 		      output_parameter_structure_name (procedure_type);
 		      if (fputc ('.', output_file) == EOF)
 			output_file_error ();
@@ -3402,8 +3380,7 @@ generate_call (call)
 		      else if (it_is_statements_generation_pass)
 			{
 			  if (fprintf
-			      (output_file, "%s.%s%x.%s%x",
-			       temp_variables_name,
+			      (output_file, "%s%x.%s%x",
 			       temp_expression_variables_names_prefix,
 			       (unsigned) number_of_expression_with_temp_variables,
 			       temp_variable_name_prefix,
@@ -3468,9 +3445,6 @@ generate_call (call)
 		    {
 		      if (VAR_FORMAL_PARAMETER (formal))
 			{
-			  if (fprintf (output_file, "%s.", all_actuals_name)
-			      < 0)
-			    output_file_error ();
 			  output_parameter_structure_name (procedure_type);
 			  if (fputc ('.', output_file) == EOF)
 			    output_file_error ();
@@ -3515,8 +3489,7 @@ generate_call (call)
 		      else if (MODE (FORMAL_PARAMETER_TYPE (formal))
 			       == ICNM_ARRAY_TYPE)
 			{
-			  if (fprintf (output_file, "m2_assarr(%s.",
-				       all_actuals_name) < 0)
+			  if (fprintf (output_file, "m2_assarr(") < 0)
 			    output_file_error ();
 			  output_parameter_structure_name (procedure_type);
 			  if (fputc ('.', output_file) == EOF)
@@ -3535,8 +3508,6 @@ generate_call (call)
 		    }
 		  else if (sinf.it_is_array_parameter)
 		    {
-		      if (fprintf (output_file, "%s.", all_actuals_name) < 0)
-			output_file_error ();
 		      output_parameter_structure_name (procedure_type);
 		      if (fputc ('.', output_file) == EOF)
 			output_file_error ();
@@ -3546,8 +3517,8 @@ generate_call (call)
 			output_file_error ();
 		      generate_expression (ACTUAL_PARAMETER_NODE (actual)
 					   ->actual_parameter_expression);
-		      if (fprintf (output_file, ".%s,%s.",
-				   open_array_address_name, all_actuals_name)
+		      if (fprintf (output_file, ".%s,",
+				   open_array_address_name)
 			  < 0)
 			output_file_error ();
 		      output_parameter_structure_name (procedure_type);
@@ -3568,8 +3539,7 @@ generate_call (call)
 		      if (temp_variable_flag)
 			{
 			  if (fprintf
-			      (output_file, "%s.%s%x.%s%x",
-			       temp_actuals_name,
+			      (output_file, "%s%x.%s%x",
 			       temp_call_actuals_name_prefix,
 			       (unsigned) number_of_current_call,
 			       actual_name_prefix,
@@ -3582,8 +3552,7 @@ generate_call (call)
 			  GEN_THROUGH_STRUCT_POINTER
 			    (ACTUAL_PARAMETER_NODE (actual)
 			     ->actual_parameter_expression);
-			  if (fprintf (output_file, ",%s.", all_actuals_name)
-			      < 0)
+			  if (fprintf (output_file, ",") < 0)
 			    output_file_error ();
 			  output_parameter_structure_name (procedure_type);
 			  if (fputc ('.', output_file) == EOF)
@@ -3607,8 +3576,7 @@ generate_call (call)
 				output_file_error ();
 			    }
 			  if (fprintf
-			      (output_file, "(&%s.%s%x.%s%x)",
-			       temp_actuals_name,
+			      (output_file, "(&%s%x.%s%x)",
 			       temp_call_actuals_name_prefix,
 			       (unsigned) number_of_current_call,
 			       actual_name_prefix,
@@ -3618,9 +3586,6 @@ generate_call (call)
 			}
 		      else
 			{
-			  if (fprintf (output_file, "%s.", all_actuals_name)
-			      < 0)
-			    output_file_error ();
 			  output_parameter_structure_name (procedure_type);
 			  if (fputc ('.', output_file) == EOF)
 			    output_file_error ();
@@ -3656,7 +3621,7 @@ generate_call (call)
 			(FORMAL_PARAMETER_TYPE (formal), &formal_size, &align);
 		      get_type_size_and_alignment
 			(sinf.type, &actual_size, &align);
-		      if (fprintf (output_file, ",%s.", all_actuals_name) < 0)
+		      if (fprintf (output_file, ",") < 0)
 			output_file_error ();
 		      output_parameter_structure_name (procedure_type);
 		      if (fputc ('.', output_file) == EOF)
@@ -3701,9 +3666,7 @@ generate_call (call)
 		output_file_error ();
 	      if (next_parameter_type (procedure_type) != NULL)
 		{
-		  if (fprintf (output_file, "&%s", all_actuals_name) < 0)
-		    output_file_error ();
-		  if (fputc ('.', output_file) == EOF)
+		  if (fprintf (output_file, "&") < 0)
 		    output_file_error ();
 		  output_parameter_structure_name (procedure_type);
 		}
@@ -3731,13 +3694,11 @@ generate_call (call)
 			output_file_error ();
 		    }
 		  if (fprintf
-		      (output_file, "%s.%s%x.%s%x),%s.%s%x.%s%x)",
-		       temp_variables_name,
+		      (output_file, "%s%x.%s%x),%s%x.%s%x)",
 		       temp_expression_variables_names_prefix,
 		       (unsigned) number_of_expression_with_temp_variables,
 		       temp_variable_name_prefix,
 		       (unsigned) number_of_current_temporary_variable,
-		       temp_variables_name,
 		       temp_expression_variables_names_prefix,
 		       (unsigned) number_of_expression_with_temp_variables,
 		       temp_variable_name_prefix,
@@ -4319,8 +4280,6 @@ execute_pass (module_or_procedure, pass)
      ICN_pointer module_or_procedure;
      register enum generator_pass pass;
 {
-  register char *union_name;
-
   current_generator_pass = pass;
   it_is_statements_generation_pass = pass == STATEMENTS_GENERATION_PASS;
   number_of_expression_with_temp_variables = 0;
@@ -4328,29 +4287,9 @@ execute_pass (module_or_procedure, pass)
   number_of_current_temporary_variable = 0;
   number_of_temp_variable_in_current_call = 0;
   current_expression_needs_temp_variables = FALSE;
-  if (pass == ACTUALS_STRUCTURES_DECLARATION_GENERATION_PASS
-      || pass == TEMP_ARRAY_ACTUALS_STRUCTURES_DECLARATION_GENERATION_PASS
-      || pass == TEMPORARY_VARIABLES_DECLARATION_GENERATION_PASS)
-    {
-      if (fputs ("union{", output_file) == EOF)
-	output_file_error ();
-    }
   if (pass == ACTUALS_STRUCTURES_DECLARATION_GENERATION_PASS)
     current_block_number_among_blocks_with_actuals++;
   generate_statement (BLOCK_BEGIN (module_or_procedure));
-  if (pass == ACTUALS_STRUCTURES_DECLARATION_GENERATION_PASS)
-    union_name = all_actuals_name;
-  else if (pass == TEMP_ARRAY_ACTUALS_STRUCTURES_DECLARATION_GENERATION_PASS)
-    union_name = temp_actuals_name;
-  else if (pass == TEMPORARY_VARIABLES_DECLARATION_GENERATION_PASS)
-    union_name = temp_variables_name;
-  else
-    union_name = NULL;
-  if (union_name != NULL)
-    {
-      if (fprintf (output_file, "}%s;\n", union_name) < 0)
-	output_file_error ();
-    }
 }
 
 /* The recursive function executes block generation for all local modules which
