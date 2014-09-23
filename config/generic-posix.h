@@ -1,10 +1,11 @@
-/* This file is used for tunning Modula-2 translator on i386 GCC compiler.
+/* This file is used for tunning Modula-2 translator on a generic POSIX subset
+   of C compiler.
    Copyright (C) 1993-1997 (see more details in file COPYING).
 
    This file is part of Modula-2 translator.  */
 
-#include "i386.h"
-#include "gcc.h"
+#include "generic.h"
+#include "posix.h"
 
 
 /* If the following macros is defined than it is used for making more
@@ -21,7 +22,7 @@
 /*#define MAKING_MORE_PRECISE_SIZE_BY_TYPE(size,icode_ptr) */
 
 /* If the following macros is defined than it is used for making more
-   precise alignment of type with mode TYPE_MODE (see commentaries in
+   precise alignment of type with mode TYPE_MODE (see commentaries in 
    m2-icode.h) after standard method of alignment calculation. */
 
 /*#define MAKING_MORE_PRECISE_ALIGN_BY_TYPE_MODE(align,type_mode) */

@@ -19,9 +19,6 @@
 #              CCOMPILER is name C compiler that will be used by m2c,
 #                           for example gcc, berkley-cc or pcc.
 #
-#	 See meaning of the construction CPU in file MACHINES
-#        (examples of the construction are:  vax, sparc).
-#
 #  Configure ignores next options:
 #              +nfp +gas +x.
 #
@@ -50,7 +47,7 @@ then
 	exit 1
 fi
 
-# Process all arguments except for CPU
+cpu=generic
 for arg in $*; do
   case $arg in
    +srcdir=*)
@@ -72,7 +69,6 @@ for arg in $*; do
    *)
 	cpu=$arg;
 	;;
-
   esac
 done
 
