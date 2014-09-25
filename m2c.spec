@@ -46,7 +46,8 @@ strip m2c
 %{__mkdir_p} %{buildroot}/usr/{bin,lib/m2c,share/{info,man/man1}}
 %{__make} install prefix=%{buildroot}/usr \
 	libdir=%{buildroot}/usr/lib/m2c \
-	man1dir=%{buildroot}/%{_mandir}/man1
+	man1dir=%{buildroot}/%{_mandir}/man1 \
+	includedir=%{buildroot}/%{_includedir}
 makeinfo doc/modula-2.texinfo
 cp modula-2.info %{buildroot}%{_infodir}
 
@@ -72,6 +73,7 @@ rm -Rf %{buildroot}
 %{_bindir}/%{name}
 %{_libdir}/%{name}
 %{_mandir}/*
+%{_includedir}/*
 %{_infodir}/*
 
 %changelog
