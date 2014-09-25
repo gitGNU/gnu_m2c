@@ -38,7 +38,7 @@ Programming in Modula-2.
 %setup -n %{name}-%{version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure i486 +cc=gcc
+CFLAGS="$RPM_OPT_FLAGS" ./configure +cc=gcc
 {%__make} prefix=/usr libdir=/usr/lib/m2c man1dir=%{_mandir}/man1
 strip m2c
 
