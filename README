@@ -1,23 +1,28 @@
-   This is Modula-2 translator. The translator is based on language
-report in the 4th edition of Wirth's book Programming in Modula-2.
-The translator also supports of the third edition of Wirth's book.
-High portability of the translator is achieved by intermediate
-translation into C.  The translator is aimed to use on Unixes of
-different flavors.
+This is the Modula-2 translator, by Vladimir Makarov. The translator
+is based on the language report in the 4th edition of Wirth's book
+Programming in Modula-2. The translator also supports the third edition of
+this book. High portability of the translator is achieved by intermediate
+translation into C. The translator is aimed for use on POSIX systems.
 
-   The translator is distributed under GNU Public License (see more
-detail in file COPYING).
+The configure generated Makefile understands the variables bindir,
+libdir, man1dir, and prefix. Use only the full path name for directories.
 
-   Installation of the translator is described in file INSTALL. File
-PROJECTS contains the list of future works on the implementation.  See
-file m2c.1 for details of the translator usage.
+           make install prefix=/usr/users/VHDL/mak
+     
+                           or
 
-   The translator has been tested only on the following platforms:
-       vax under Ultrix
-       i386 under Linux
-       sparc under SunOS 4.1
-       alpha under OSF3.x
+           make install bindir=/usr/users/VHDL/mak/bin\
+                libdir=/usr/users/VHDL/mak/lib\
+                /usr/users/VHDL/mak/man/man1
 
-Please send bug reports and comments to vmakarov@usa.net
+To specify where to find the sources, as an argument +srcdir to
+configure:
 
-Vladimir Makarov
+          ../m2c-0.7/configure +srcdir=../m2c-0.7
+
+You can use option `+cc' if you wish that configure will not ask
+about C compiler name. For example:
+
+      configure +cc=gcc
+
+Please send bug reports and comments to m2c-main@nongnu.org.

@@ -12,10 +12,10 @@
 #  on machine-dependent things and
 #  on used C compiler.
 #
-# Usage: configure [CPU +srcdir=SRCDIR +cc=CCOMPILER]
+# Usage: configure +srcdir=SRCDIR +cc=CCOMPILER]
 #	 where
 #              SRCDIR is directory of sources,
-#                        for example /usr/local/src/m2c-0.6;
+#                        for example /usr/local/src/m2c-0.7;
 #              CCOMPILER is name C compiler that will be used by m2c,
 #                           for example gcc, berkley-cc or pcc.
 #

@@ -1,8 +1,0 @@
-  This file lists probable future projects and enhancements for m2c.
-  
-  1. Creation of english documentation on m2c (including information
-     about usage gdb and dbx for debugging program compiled by m2c).
-
-  2. Implementation of some language usable extensions.
-
-  3. Implementation of some object-oriented extensions of the language.
