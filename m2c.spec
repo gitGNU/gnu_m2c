@@ -43,11 +43,11 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure +cc=gcc
 strip m2c
 
 %install
-%{__mkdir_p} %{buildroot}/usr/{bin,lib/m2c,share/{info,man/man1}}
+%{__mkdir_p} %{buildroot}/usr/{bin,include,lib/m2c,share/{info,man/man1}}
 %{__make} install prefix=%{buildroot}/usr \
 	libdir=%{buildroot}/usr/lib/m2c \
-	man1dir=%{buildroot}/%{_mandir}/man1 \
-	includedir=%{buildroot}/%{_includedir}
+	man1dir=%{buildroot}%{_mandir}/man1 \
+	includedir=%{buildroot}%{_includedir}
 makeinfo doc/modula-2.texinfo
 cp modula-2.info %{buildroot}%{_infodir}
 
