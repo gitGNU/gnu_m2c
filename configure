@@ -168,7 +168,6 @@ then
 else
 	echo "${program_name} - warning:" 1>&2
         echo "      Coroutines for given machine was not implemented." 1>&2;
-        echo "      Therefore coroutine facilities do not work." 1>&2;
 fi
 
 
@@ -202,12 +201,12 @@ m2l_ascor.o: m2l_ascor.c
 	$(AS) -o m2l_ascor.o m2l_ascor.s
 	rm m2l_ascor.s
 GENCOROUTINE
-	corout_message="Coroutines are enable.";
+	corout_message="Coroutines are enabled.";
 else
 	# Remove any references to ${corout_function}.o in Makefile.
 	sed "s/${corout_function}.o//" Makefile >$temp_file;
         $move $temp_file Makefile;
-	corout_message="Coroutines are disable.";
+	corout_message="Coroutines are disabled.";
 fi	
 
 # Generate ${config_file} file

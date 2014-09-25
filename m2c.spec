@@ -39,7 +39,7 @@ Programming in Modula-2.
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" ./configure +cc=gcc
-{%__make} prefix=/usr libdir=/usr/lib/m2c man1dir=%{_mandir}/man1
+%{__make} prefix=/usr libdir=/usr/lib/m2c man1dir=%{_mandir}/man1
 strip m2c
 
 %install
@@ -68,7 +68,7 @@ fi
 rm -Rf %{buildroot}
 
 %files 
-%doc COPYING ChangeLog PROJECTS README
+%doc COPYING
 %{_bindir}/%{name}
 %{_libdir}/%{name}
 %{_mandir}/*
