@@ -115,11 +115,8 @@ ADDITIONAL_DIRECTORIES= $(srcdir)/config $(srcdir)/m2-tests $(srcdir)/doc\
 M2F= m2-errors.o m2-main.o m2-icode.o m2-library.o m2-type-size.o\
 	     m2-scanner.o m2-syntax.o m2-semantics.o m2-generator.o 
 
-# Assembler run-time functions for coroutine implementation.
-M2ASSCOR=m2l_ascor.o
-
 # All object files of the run-time library.
-M2LIBPROC=$(M2ASSCOR) m2l_setin.o m2l_nites.o m2l_eq.o m2l_ne.o m2l_assarr.o\
+M2LIBPROC=m2l_setin.o m2l_nites.o m2l_eq.o m2l_ne.o m2l_assarr.o\
 	  m2l_assstr.o m2l_cap.o  m2l_halt.o m2l_arrpar.o m2l_testptr.o\
 	  m2l_rngovf.o m2l_cor.o
 
@@ -228,7 +225,7 @@ clean: modclean
 	rm -f $(M2F) m2c $(M2LIBPROC) $(m2library)
 
 distclean: clean
-	rm -f config.status m2l_ascor.c m2-config.h Makefile
+	rm -f config.status m2-config.h Makefile
 	rm -f TAGS
 
 # Updating TAGS table for the `m2c' sources and run-time function sources.

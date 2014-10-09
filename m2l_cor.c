@@ -16,35 +16,62 @@
  * with m2c. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "m2-config.h"
+#ifdef COROUTINE_ENABLE
+
+#include <ucontext.h>
 #include <stdio.h>
 #include "m2lib.h"
 
-extern void m2_pasivcor ();
-extern void m2_activcor ();
+static ucontext_t *
+prepare_context (void)
+{
+  ucontext_t *ctx;
+  int err;
 
-int *m2_nprcadr;
-unsigned int m2_nprclong;
-int *m2_newcor;
-extern int *m2_currcor;
-extern int *m2_maincor;
+  ctx = malloc(sizeof(ucontext_t));
+  if (!ctx)
+    {
+      fputs("\nno memory for coroutine context", stderr);
+      m2_halt();
+    }
+
+  err = getcontext(ctx);
+  if (err != 0)
+    {
+      fputs("\ngetcontext failed", stderr);
+      m2_halt();
+    }
+
+  return ctx;
+}
 
 void
-m2_newprocess (int (*f) (), int *adr, unsigned int clong, int **cor)
+m2_newprocess (void (*f) (), int *sp, unsigned int size, int **cor)
 {
-  m2_nprcadr = adr;
-  m2_nprclong = clong;
-  (*f) (1);
-  *cor = m2_newcor;
+  ucontext_t *ctx = prepare_context();
+  ctx->uc_stack.ss_sp = sp;
+  ctx->uc_stack.ss_size = size;
+  ctx->uc_stack.ss_flags = 0;
+  ctx->uc_link = 0;
+  makecontext(ctx, f, 0);
+  *cor = (void *) ctx;
 }
 
 void
 m2_transfer (int **cor1, int **cor2)
 {
-  int *c;
+  int err;
 
-  m2_pasivcor ();
-  c = m2_currcor;
-  m2_currcor = (*cor2);
-  *cor1 = c;
-  m2_activcor ();
+  if (!*cor1)
+    *cor1 = (void *) prepare_context();
+
+  err = swapcontext((void *) *cor1, (void *) *cor2);
+  if (err != 0)
+    {
+      fputs("\nswapcontext failed", stderr);
+      m2_halt();
+    }
 }
+
+#endif  // COROUTINE_ENABLE

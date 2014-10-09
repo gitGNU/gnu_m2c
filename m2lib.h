@@ -18,7 +18,7 @@ extern void m2_assstr (char *var, char *str, unsigned int vlong, unsigned int st
 /* m2l_cap.c */
 extern int m2_cap (unsigned int ch);
 /* m2l_cor.c */
-extern void m2_newprocess (int (*f) (), int *adr, unsigned int clong, int **cor);
+extern void m2_newprocess (void (*f) (), int *sp, unsigned int size, int **cor);
 extern void m2_transfer (int **cor1, int **cor2);
 /* m2l_eq.c */
 extern int m2_eq (char *str1, char *str2, unsigned int l);

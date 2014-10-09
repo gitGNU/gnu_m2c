@@ -69,14 +69,6 @@ static char label_name_prefix[] = "label";
 static char implementation_module_initiation_flag_name[]
 = "module_initiation_flag";
 
-/* The following string is name of C parameter of function which implements
-   Modula-2 procedure without parameters declared on the uppest level.
-   Such function may be used as coroutine.  Nonzero parameter value means
-   that given call is used coroutine creation (by standard procedure
-   NEWPROCESS). */
-
-static char coroutine_parameter_name[] = "coroutine_creation_flag";
-
 /* The following string var_prefix is used in many cases:
    1) as name of structured local C variable which contains of all variables of
       given procedure;
@@ -114,7 +106,7 @@ static char coroutine_parameter_name[] = "coroutine_creation_flag";
                }var;
        	...
         }
-        static int _p_m1_m(coroutine_creation_flag)int coroutine_creation_flag;
+        static int _p_m1_m();
         {struct var_p_m1_m var
                ...
         }
@@ -2847,7 +2839,7 @@ generate_call (call)
   register ICN_pointer procedure_type, result_type;
   enum icode_node_mode mode;
   int struct_for_temp_vars_is_needed, fltemp, it_is_designator;
-  int it_is_local_procedure, it_may_be_used_for_coroutine;
+  int it_is_local_procedure;
   Tcard formal_size, actual_size;
   int align;
   semantic_information sinf;
@@ -3654,15 +3646,7 @@ generate_call (call)
 	    output_string_when_statements_generation (")");
 	  if (it_is_statements_generation_pass)
 	    {
-#ifdef COROUTINE_ENABLE
-	      it_may_be_used_for_coroutine
-		= (!it_is_local_procedure && result_type == NULL
-		   && next_parameter_type (procedure_type) == NULL);
-#else
-	      it_may_be_used_for_coroutine = FALSE;
-#endif
-	      if (fputs ((it_may_be_used_for_coroutine ? "(0" : "("),
-			 output_file) == EOF)
+	      if (fputs ("(", output_file) == EOF)
 		output_file_error ();
 	      if (next_parameter_type (procedure_type) != NULL)
 		{
@@ -3681,8 +3665,7 @@ generate_call (call)
 	      generate_temp_variable_declaration (result_type);
 	      if (it_is_statements_generation_pass)
 		{
-		  if (it_may_be_used_for_coroutine
-		      || next_parameter_type (procedure_type) != NULL)
+		  if (next_parameter_type (procedure_type) != NULL)
 		    {
 		      if (fputc (',', output_file) == EOF)
 			output_file_error ();
@@ -4404,7 +4387,7 @@ generate_block (module_or_procedure)
     {
       register ICN_pointer result_type_implementation, procedure_type;
       register ICN_pointer result_type, formal_parameter;
-      int indirection_is_needed, it_may_be_used_as_coroutine;
+      int indirection_is_needed;
       int nested_procedures_exist, it_has_parameteres, align;
       int semicolon_is_not_needed, it_has_variables;
       Tcard parameter_size;
@@ -4427,18 +4410,6 @@ generate_block (module_or_procedure)
       output_object_full_name (module_or_procedure, FALSE);
       if (fputc ('(', output_file) == EOF)
 	output_file_error ();
-#ifdef COROUTINE_ENABLE
-      it_may_be_used_as_coroutine
-	= (result_type == NULL && !it_has_parameteres
-	   && procedure_over_denotation (SCOPE (module_or_procedure)) == NULL);
-#else
-      it_may_be_used_as_coroutine = FALSE;
-#endif
-      if (it_may_be_used_as_coroutine)
-	{
-	  if (fputs (coroutine_parameter_name, output_file) == EOF)
-	    output_file_error ();
-	}
       if (it_has_parameteres)
 	{
 	  if (fputs (par_prefix, output_file) == EOF)
@@ -4447,8 +4418,7 @@ generate_block (module_or_procedure)
       if (result_type != NULL && result_type_implementation == NULL)
 	{
 	  if (fprintf (output_file,
-		       (it_has_parameteres || it_may_be_used_as_coroutine
-			? ",%s" : "%s"),
+		       (it_has_parameteres ? ",%s" : "%s"),
 		       function_result_name) < 0)
 	    output_file_error ();
 	}
@@ -4456,11 +4426,6 @@ generate_block (module_or_procedure)
 	output_file_error ();
       output_type_definition_part (result_type_implementation,
 				   (indirection_is_needed ? 1 : 0), FALSE);
-      if (it_may_be_used_as_coroutine)
-	{
-	  if (fprintf (output_file, "int %s;", coroutine_parameter_name) < 0)
-	    output_file_error ();
-	}
       if (it_has_parameteres)
 	{
 	  if (fputs ("register struct ", output_file) == EOF)
@@ -4495,35 +4460,6 @@ generate_block (module_or_procedure)
 	}
       execute_declaration_generation_passes (module_or_procedure);
       nested_procedures_exist = it_has_nested_procedures (module_or_procedure);
-      if (it_may_be_used_as_coroutine)
-	{
-	  if (fprintf (output_file, "if(%s)m2_newpr1(",
-		       coroutine_parameter_name) < 0)
-	    output_file_error ();
-	  if (it_has_variables)
-	    {
-	      if (fprintf (output_file, "&%s,", var_prefix) < 0)
-		output_file_error ();
-	    }
-	  else
-	    {
-	      if (fputs ("0,", output_file) == EOF)
-		output_file_error ();
-	    }
-	  if (nested_procedures_exist && it_has_variables)
-	    {
-	      if (fputc ('&', output_file) == EOF)
-		output_file_error ();
-	      output_object_full_name (module_or_procedure, TRUE);
-	    }
-	  else
-	    {
-	      if (fputc ('0', output_file) == EOF)
-		output_file_error ();
-	    }
-	  if (fputs (");else{", output_file) == EOF)
-	    output_file_error ();
-	}
       if (nested_procedures_exist)
 	{
 	  if (it_has_variables)
@@ -4550,11 +4486,6 @@ generate_block (module_or_procedure)
 	      if (fprintf (output_file, "=%s;", par_prefix) < 0)
 		output_file_error ();
 	    }
-	}
-      if (it_may_be_used_as_coroutine)
-	{
-	  if (fputc ('}', output_file) == EOF)
-	    output_file_error ();
 	}
       /* Generate allocating memory for array parameters. */
       for (formal_parameter = next_parameter_type (procedure_type);

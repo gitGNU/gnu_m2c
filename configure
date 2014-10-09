@@ -161,15 +161,6 @@ then
 fi
 
 
-# Are coroutines implemented ?
-if test -f ${srcdir}/config/${cpu}-corout.c
-then
-	corout_file=${srcdir}/config/${cpu}-corout.c;
-else
-	echo "${program_name} - warning:" 1>&2
-        echo "      Coroutines for given machine was not implemented." 1>&2;
-fi
-
 
 #------------------------------------------------
 # All is tested. Now generation.
@@ -182,44 +173,10 @@ echo "# This file is generated automatically! Change \`Makefile.tmpl'!" \
 	 >Makefile;
 sed "s@^srcdir.*=.*\$@srcdir = ${srcdir}@" ${srcdir}/Makefile.tmpl >>Makefile;
 
-# Generate link to coroutine procedures if necessary.
-# Also generate additional make rules for coroutine procedures if necessary.
+cat ${srcdir}/config/${config_template} >${config_file};
 
-$remove ${corout_function}.c;
-
-if test x$corout_file != x
-then
-	# Make a symlink if possible, otherwise try a hard link
-        $symbolic_link $corout_file ${corout_function}.c 2>/dev/null\
-	 || $hard_link $corout_file ${corout_function}.c;
-
- 	# Add rules for coroutine procedures generation by assembler
-	cat >>Makefile <<'GENCOROUTINE'
-
-m2l_ascor.o: m2l_ascor.c
-	$(CC) -E m2l_ascor.c >m2l_ascor.s
-	$(AS) -o m2l_ascor.o m2l_ascor.s
-	rm m2l_ascor.s
-GENCOROUTINE
-	corout_message="Coroutines are enabled.";
-else
-	# Remove any references to ${corout_function}.o in Makefile.
-	sed "s/${corout_function}.o//" Makefile >$temp_file;
-        $move $temp_file Makefile;
-	corout_message="Coroutines are disabled.";
-fi	
-
-# Generate ${config_file} file
-$remove ${config_file};
-echo "/* This file is generated automatically!" >${config_file};
-echo "   Change \`configure' and \`${srcdir}/config/${config_template}' !*/"\
-	 >>${config_file};
-if test x$corout_file != x
-then
-	echo "#define COROUTINE_ENABLE" >>${config_file};
-fi
-
-cat ${srcdir}/config/${config_template} >>${config_file};
+# Assume coroutines (using makecontext/swapcontext) are always available.
+echo "#define COROUTINE_ENABLE" >>${config_file};
 
 echo "m2c is now tuned on machine $cpu for use with a $C_compiler."\
 	 >$temp_file;
