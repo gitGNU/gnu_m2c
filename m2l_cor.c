@@ -70,5 +70,3 @@ m2_transfer (int **cor1, int **cor2)
       m2_halt();
     }
 }
-
-#endif  // COROUTINE_ENABLE
