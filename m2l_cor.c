@@ -16,9 +16,6 @@
  * with m2c. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "m2-config.h"
-#ifdef COROUTINE_ENABLE
-
 #include <ucontext.h>
 #include <stdio.h>
 #include "m2lib.h"
