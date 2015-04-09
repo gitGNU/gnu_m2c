@@ -1,4 +1,4 @@
-/* Definitions for syntax analyze pass of GNU Modula-2 translator.
+/* Definitions for syntax analyze pass of m2c translator.
  * Copyright 1993, 1994, 1995, 1996, 1997 Vladimir Makarov
  * This file is part of m2c.
  *

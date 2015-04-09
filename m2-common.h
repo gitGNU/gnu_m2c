@@ -1,4 +1,4 @@
-/* Common definitions for all GNU Modula-2 translator files.
+/* Common definitions for all m2c translator files.
  * Copyright 1993, 1994, 1995, 1996, 1997 Vladimir Makarov
  * This file is part of m2c.
  *

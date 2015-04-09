@@ -1,4 +1,4 @@
-/* Error messages and function of work with errors for GNU Modula-2 translator.
+/* Error messages and function of work with errors for m2c translator.
  * Copyright 1993, 1994, 1995, 1996, 1997 Vladimir Makarov
  * This file is part of m2c.
  *

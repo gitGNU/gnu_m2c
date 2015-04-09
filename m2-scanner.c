@@ -1,4 +1,4 @@
-/* Scanner of GNU Modula-2 translator.
+/* Scanner of m2c translator.
  * Copyright 1993, 1994, 1995, 1996, 1997 Vladimir Makarov
  * This file is part of m2c.
  *
