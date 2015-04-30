@@ -1,5 +1,5 @@
 /* Common definitions for all m2c translator files.
- * Copyright 1993, 1994, 1995, 1996, 1997 Vladimir Makarov
+ * Copyright 1991, 1993, 1994, 1997 Vladimir Makarov
  * This file is part of m2c.
  *
  * m2c is free software: you can redistribute it and/or modify it under

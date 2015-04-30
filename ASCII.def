@@ -1,38 +1,27 @@
-DEFINITION MODULE ASCII;
+/* Part of the standard library.
+ * Copyright 1991, 1993 Vladimir Makarov
+ * This file is part of m2c.
+ *
+ * m2c is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
+ *
+ * m2c is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with m2c. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-CONST
- nul=0C;
- soh=1C;
- stx=2C;
- etx=3C;
- eot=4C;
- enq=5C;
- ack=6C;
- bel=7C;
- bs=10C;
- ht=11C;
- lf=12C;
- vt=13C;
- ff=14C;
- cr=15C;
- so=16C;
- si=17C;
- dle=20C;
- dc1=21C;
- dc2=22C;
- dc3=23C;
- dc4=24C;
- nak=25C;
- syn=26C;
- etb=27C;
- can=30C;
- em=31C;
- sub=32C;
- esc=33C;
- fs=34C;
- gs=35C;
- rs=36C;
- us=37C;
- del=177C;
+DEFINITION MODULE ASCII;
+  CONST
+    nul=0C; soh=1C; stx=2C; etx=3C; eot=4C; enq=5C; ack=6C;
+    bel=7C; bs=10C; ht=11C; lf=12C; vt=13C; ff=14C; cr=15C;
+    so=16C; si=17C; dle=20C; dc1=21C; dc2=22C; dc3=23C; dc4=24C;
+    nak=25C; syn=26C; etb=27C; can=30C; em=31C; sub=32C; esc=33C;
+    fs=34C; gs=35C; rs=36C; us=37C; del=177C;
 
 END ASCII.

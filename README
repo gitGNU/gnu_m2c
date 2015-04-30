@@ -8,7 +8,7 @@ The configure generated Makefile understands the variables bindir,
 libdir, man1dir, and prefix. Use only the full path name for directories.
 
            make install prefix=/usr/users/VHDL/mak
-     
+ 
                            or
 
            make install bindir=/usr/users/VHDL/mak/bin\
@@ -26,3 +26,6 @@ about C compiler name. For example:
       configure +cc=gcc
 
 Please send bug reports and comments to m2c-main@nongnu.org.
+
+This program and its files, unless otherwise noted, were originally
+licensed under the original GPL.

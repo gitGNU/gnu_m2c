@@ -1,5 +1,5 @@
-/* Library of m2c (VLS, command line of m2c, hash tables and other functions).
- * Copyright 1993, 1994, 1995, 1996, 1997 Vladimir Makarov
+/* Library of m2c (VLS, command line of m2c, hash tables, and other functions).
+ * Copyright 1991, 1993, 1994, 1997 Vladimir Makarov
  * This file is part of m2c.
  *
  * m2c is free software: you can redistribute it and/or modify it under
@@ -18,11 +18,9 @@
 
 #include "m2-common.h"
 
-
 /* The following functions are used by macros for work with variable
    length strings (VLS).  Remember that they are internal functions -
    all work with VLS is executed through the macros. */
-
 
 /* The following function implements macros VLS_TAILOR.  Length of memory
    allocated for VLS becames equal to VLS length (but memory for zero_length
