@@ -1,3 +1,0 @@
-Should -strict be default? If so, extensions should have their own flag.
-
-I prefer POSIX style flags, not -foo or --foo. These should be converted.
