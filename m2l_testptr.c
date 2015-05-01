@@ -1,5 +1,5 @@
 /* Modula-2 run-time function for processing null pointer.
- * Copyright 1991, 1993, 1994, 1997 Vladimir Makarov
+ * Copyright 1991, 1992, 1993, 1994, 1997 Vladimir Makarov
  * This file is part of m2c.
  *
  * m2c is free software: you can redistribute it and/or modify it under
@@ -20,10 +20,9 @@
 #include "m2lib.h"
 
 char *
-m2_testptr (char *ptr)
-{
-  if (ptr != 0)
-    return ptr;
-  fputs ("\n\rpointer overange", stderr);
-  m2_halt ();
+m2_testptr (char *ptr) {
+	if (ptr != 0)
+		return ptr;
+	fputs ("\npointer overange", stderr);
+	m2_halt ();
 }

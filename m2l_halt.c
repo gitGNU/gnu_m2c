@@ -1,5 +1,5 @@
 /* Run-time function for Modula-2 HALT implementation.
- * Copyright 1991, 1993, 1994, 1997 Vladimir Makarov
+ * Copyright 1991, 1992, 1993, 1994, 1997 Vladimir Makarov
  * This file is part of m2c.
  *
  * m2c is free software: you can redistribute it and/or modify it under
@@ -20,8 +20,7 @@
 #include "m2lib.h"
 
 void
-m2_halt (void)
-{
-  fputs ("\n\rhalt\n\r", stderr);
-  exit (1);
+m2_halt (void) {
+	fputs ("\nhalt\n", stderr);
+	exit (1);
 }

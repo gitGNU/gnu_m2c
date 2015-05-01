@@ -1,5 +1,5 @@
 /* Modula-2 run-time function for processing range overange.
- * Copyright 1991, 1993, 1994, 1997 Vladimir Makarov
+ * Copyright 1991, 1992, 1993, 1994, 1997 Vladimir Makarov
  * This file is part of m2c.
  *
  * m2c is free software: you can redistribute it and/or modify it under
@@ -20,8 +20,7 @@
 #include "m2lib.h"
 
 void
-m2_rngovf (void)
-{
-  fputs ("\n\rrange overange", stderr);
-  m2_halt ();
+m2_rngovf (void) {
+	fputs ("\nrange overange", stderr);
+	m2_halt ();
 }

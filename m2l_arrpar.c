@@ -1,5 +1,5 @@
 /* Run-time function for Modula-2 value array parameter allocation.
- * Copyright 1991, 1993, 1994, 1997 Vladimir Makarov
+ * Copyright 1991, 1992, 1993, 1994, 1997 Vladimir Makarov
  * This file is part of m2c.
  *
  * m2c is free software: you can redistribute it and/or modify it under
@@ -20,19 +20,17 @@
 #include "m2lib.h"
 
 void
-m2_arrpar (unsigned char **adr, unsigned int high, unsigned int elong)
-{
-  register unsigned char *var, *val;
-  register unsigned int valong;
+m2_arrpar (unsigned char **adr, unsigned int high, unsigned int elong) {
+	register unsigned char *var, *val;
+	register unsigned int valong;
 
-  val = (*adr);
-  valong = (high + 1) * elong;
-  var = (*adr) = malloc (valong);
-  if (var == NULL)
-    {
-      fputs ("\n\r no memory for array parameter", stderr);
-      m2_halt ();
-    }
-  while (valong-- != 0)
-    *var++ = (*val++);
+	val = (*adr);
+	valong = (high + 1) * elong;
+	var = (*adr) = malloc (valong);
+	if (var == NULL) {
+		fputs ("\n No memory for array parameter", stderr);
+		m2_halt ();
+	}
+	while (valong-- != 0)
+		*var++ = (*val++);
 }

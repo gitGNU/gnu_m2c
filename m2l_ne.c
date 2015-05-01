@@ -1,5 +1,5 @@
 /* Run-time function for Modula-2 comparing long memory values on inequality.
- * Copyright 1991, 1993, 1994, 1997 Vladimir Makarov
+ * Copyright 1991, 1992, 1993, 1994, 1997 Vladimir Makarov
  * This file is part of m2c.
  *
  * m2c is free software: you can redistribute it and/or modify it under
@@ -19,10 +19,9 @@
 #include "m2lib.h"
 
 int
-m2_ne (char *str1, char *str2, unsigned int l)
-{
-  while (l-- != 0)
-    if (*str1++ != *str2++)
-      return 1;
-  return 0;
+m2_ne (char *str1, char *str2, unsigned int l) {
+	while (l-- != 0)
+		if (*str1++ != *str2++)
+			return 1;
+	return 0;
 }
