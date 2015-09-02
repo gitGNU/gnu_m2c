@@ -1,5 +1,5 @@
 /* Driver of Modula-2 translator.
- * Copyright 1991, 1993, 1994, 1997 Vladimir Makarov
+ * Copyright 1991-1994, 1997 Vladimir Makarov
  * This file is part of m2c.
  *
  * m2c is free software: you can redistribute it and/or modify it under
@@ -27,78 +27,32 @@
 #include <signal.h>
 #include <setjmp.h>
 
-/* Begin of declarations of some flags of Modula-2 translator. */
+static int all_flag; /* -all */
+static int C_flag; /* -C */
+static int CM_flag; /* -CM */
+static int make_flag; /* -make */
+static int MAKE_flag; /* -MAKE */
+static int update_flag; /* -update */
+static int v_flag; /* -v */
 
-/* Compilation of all program modules with
-   removing unused procedures (-all). */
+/* The translator implements Modula-2 described in 4th edition of Programming
+   in Modula-2 by N. E. Wirth. It also supports the 3rd edition:
 
-static int all_flag;
-
-/* Only compilation of Modula-2 modules to C code (-C). */
-
-static int C_flag;
-
-/* Only output make dependence for each Modula-2 module
-   to standard output (-CM). */
-
-static int CM_flag;
-
-/* Only one Modula-2 module must be on command line.
-   In addition to this requirement the module must be main module.
-   All program modules in the current directory are processed as in
-   update option case.  Object files of the program which is placed in other
-   directories are used for loader execution time (if linkage is specified).
-   Modula-2 translator assumes that implementation module and its object files
-   is placed in the relative definition module directory. */
-
-static int make_flag;
-
-/* Output of make dependence lines that describes processing modules
-   as in `-make' option specification case.  None files are generated. */
-
-static int MAKE_flag;
-
-/* Update of any modula module output (-update). */
-
-static int update_flag;
-
-/* Output of command lines of processes loaded (-v). */
-
-static int v_flag;
-
-/* Prohibit language extensions (-strict). */
-
-int strict_flag;
-
-/* The translator implements Modula-2 described in 3rd edition of Wirth's
-   book (-3).  Implicitly the translator implements the language defined in the
-   4th edition.
-
-   The differences between the 3rd and 4th editions are the following.
-   -  A string consisting of n characters is of type ARRAY [0..n-1] OF CHAR in
-      the 3rd edition and ARRAY [0..n] OF CHAR in the 4th edition.
-   -  Opaque export is restricted to pointers and to subranges of standard
-      types for the 4th edition and only to pointers for the 3rd edition.
-   -  Standard functions FLOAT and CHR accept an argument of type INTEGER,
-      Functions TRUNC, HIGH, ORD, and SIZE are of type INTEGER.  The 3rd
-      edition use type CARDINAL instead of INTEGER in these cases.
+   - A string consisting of n characters is of type ARRAY [0..n-1] OF CHAR in
+     the 3rd edition and ARRAY [0..n] OF CHAR in the 4th edition.
+   - Opaque export is restricted to pointers and to subranges of standard
+     types for the 4th edition and only to pointers for the 3rd edition.
+   - Standard functions FLOAT and CHR accept an argument of type INTEGER,
+     Functions TRUNC, HIGH, ORD, and SIZE are of type INTEGER.  The 3rd
+     edition use type CARDINAL instead of INTEGER in these cases.
 */
 
-int third_edition_flag;
+int strict_flag; /* -strict */
+int third_edition_flag; /* -3 */
+int only_upper_case_flag; /* -upper-case */
+int test_flag; /* -test */
 
-/* Only upper case keywords and standard identifiers (-upper-case).
-   Flag `-strict' means `-upper-case'. */
-
-int only_upper_case_flag;
-
-/* Flag of generation of dynamic tests of
-   array indexes and pointer values (-test). */
-
-int test_flag;
-
-/* End of declarations of some flags of Modula-2 translator. */
 
-
 
 /* Full file name of run-time library for Modula-2 program. */
 
@@ -110,7 +64,6 @@ static VLS m2_run_time_library;
    defined). */
 
 static char *m2_library_paths;
-
 
 /* TRUE if making all (-all flag) program and picking up objects used in
    program. */
