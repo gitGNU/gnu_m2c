@@ -1,4 +1,4 @@
-/* Part of the standard library.
+(* Part of the standard library.
  * Copyright 1991, 1993 Vladimir Makarov
  * This file is part of m2c.
  *
@@ -14,7 +14,7 @@
  *
  * You should have received a copy of the GNU General Public License along
  * with m2c. If not, see <http://www.gnu.org/licenses/>.
- */
+ *)
 
 IMPLEMENTATION MODULE ASCII;
 BEGIN
